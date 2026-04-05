@@ -139,6 +139,3 @@ src/
 * Advanced filtering (date range and amount bands).
 * Unit tests for utility logic and component behavior.
 
-## Author Note
-
-This project intentionally balances simplicity and completeness. The objective was to show product thinking, clean implementation, and maintainable frontend architecture rather than backend complexity.
