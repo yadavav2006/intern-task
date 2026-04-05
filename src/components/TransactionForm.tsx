@@ -76,38 +76,38 @@ function TransactionForm({
   }
 
   return (
-    <section className="rounded-3xl border border-slate-900/10 bg-white/90 p-5 shadow-[0_20px_45px_-36px_rgba(15,23,42,0.95)] backdrop-blur sm:p-6">
+    <section className="rounded-3xl border border-slate-900/10 bg-white/90 p-5 shadow-[0_20px_45px_-36px_rgba(15,23,42,0.95)] backdrop-blur dark:border-slate-600/35 dark:bg-slate-900/75 dark:shadow-[0_24px_50px_-36px_rgba(0,0,0,0.95)] sm:p-6">
       <div className="mb-4 flex items-center justify-between gap-3">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
             Transaction Editor
           </p>
-          <h2 className="mt-1 text-xl font-semibold text-slate-900">
+          <h2 className="mt-1 text-xl font-semibold text-slate-900 dark:text-slate-100">
             {mode === 'add' ? 'Add Transaction' : 'Edit Transaction'}
           </h2>
         </div>
         <button
           type="button"
           onClick={onCancel}
-          className="rounded-xl border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100"
+          className="rounded-xl border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
         >
           Cancel
         </button>
       </div>
 
       <form className="grid gap-4 md:grid-cols-2" onSubmit={handleSubmit}>
-        <label className="flex flex-col gap-1 text-sm font-medium text-slate-700">
+        <label className="flex flex-col gap-1 text-sm font-medium text-slate-700 dark:text-slate-300">
           Date
           <input
             type="date"
             value={draft.date}
             onChange={(event) => updateDraft('date', event.target.value)}
-            className="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 outline-none transition focus:border-sky-500 focus:bg-white"
+            className="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 outline-none transition focus:border-sky-500 focus:bg-white dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:focus:bg-slate-900"
             required
           />
         </label>
 
-        <label className="flex flex-col gap-1 text-sm font-medium text-slate-700">
+        <label className="flex flex-col gap-1 text-sm font-medium text-slate-700 dark:text-slate-300">
           Amount
           <input
             type="number"
@@ -117,29 +117,29 @@ function TransactionForm({
             onChange={(event) =>
               updateDraft('amount', Number(event.target.value) || 0)
             }
-            className="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 outline-none transition focus:border-sky-500 focus:bg-white"
+            className="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 outline-none transition focus:border-sky-500 focus:bg-white dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:focus:bg-slate-900"
             required
           />
         </label>
 
-        <label className="flex flex-col gap-1 text-sm font-medium text-slate-700 md:col-span-2">
+        <label className="flex flex-col gap-1 text-sm font-medium text-slate-700 dark:text-slate-300 md:col-span-2">
           Description
           <input
             type="text"
             value={draft.description}
             onChange={(event) => updateDraft('description', event.target.value)}
             placeholder="Example: Grocery shopping"
-            className="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 outline-none transition focus:border-sky-500 focus:bg-white"
+            className="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 outline-none transition focus:border-sky-500 focus:bg-white dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-400 dark:focus:bg-slate-900"
             required
           />
         </label>
 
-        <label className="flex flex-col gap-1 text-sm font-medium text-slate-700">
+        <label className="flex flex-col gap-1 text-sm font-medium text-slate-700 dark:text-slate-300">
           Category
           <select
             value={draft.category}
             onChange={(event) => updateDraft('category', event.target.value)}
-            className="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 outline-none transition focus:border-sky-500 focus:bg-white"
+            className="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 outline-none transition focus:border-sky-500 focus:bg-white dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:focus:bg-slate-900"
           >
             {allCategories.map((category) => (
               <option key={category} value={category}>
@@ -149,14 +149,14 @@ function TransactionForm({
           </select>
         </label>
 
-        <label className="flex flex-col gap-1 text-sm font-medium text-slate-700">
+        <label className="flex flex-col gap-1 text-sm font-medium text-slate-700 dark:text-slate-300">
           Type
           <select
             value={draft.type}
             onChange={(event) =>
               updateDraft('type', event.target.value as TransactionDraft['type'])
             }
-            className="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 outline-none transition focus:border-sky-500 focus:bg-white"
+            className="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 outline-none transition focus:border-sky-500 focus:bg-white dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:focus:bg-slate-900"
           >
             <option value="income">Income</option>
             <option value="expense">Expense</option>
@@ -164,7 +164,7 @@ function TransactionForm({
         </label>
 
         {error ? (
-          <p className="md:col-span-2 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">
+          <p className="md:col-span-2 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700 dark:border-rose-700/45 dark:bg-rose-950/40 dark:text-rose-200">
             {error}
           </p>
         ) : null}
@@ -172,7 +172,7 @@ function TransactionForm({
         <div className="md:col-span-2 flex justify-end">
           <button
             type="submit"
-            className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
+            className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
           >
             {mode === 'add' ? 'Add Transaction' : 'Save Changes'}
           </button>

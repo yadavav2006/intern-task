@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 @import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   color-scheme: light;
@@ -7,6 +8,10 @@
   --ink-700: #334155;
   --surface: #ffffff;
   --line: rgba(15, 23, 42, 0.12);
+}
+
+:root.dark {
+  color-scheme: dark;
 }
 
 * {
@@ -29,6 +34,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.dark body {
+  background-color: #020617;
+  color: #e2e8f0;
+}
+
 h1,
 h2,
 h3 {
@@ -39,6 +49,11 @@ h3 {
 ::selection {
   background: #fde68a;
   color: #0f172a;
+}
+
+.dark ::selection {
+  background: #0ea5e9;
+  color: #f8fafc;
 }
 
 @keyframes fadeIn {

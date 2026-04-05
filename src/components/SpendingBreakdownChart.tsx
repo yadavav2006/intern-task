@@ -5,6 +5,7 @@ import EmptyState from './EmptyState'
 
 interface SpendingBreakdownChartProps {
   data: CategoryBreakdownPoint[]
+  isDark: boolean
 }
 
 const PIE_COLORS = [
@@ -17,7 +18,7 @@ const PIE_COLORS = [
   '#64748b',
 ]
 
-function SpendingBreakdownChart({ data }: SpendingBreakdownChartProps) {
+function SpendingBreakdownChart({ data, isDark }: SpendingBreakdownChartProps) {
   if (data.length === 0) {
     return (
       <EmptyState
@@ -28,19 +29,19 @@ function SpendingBreakdownChart({ data }: SpendingBreakdownChartProps) {
   }
 
   return (
-    <div className="rounded-3xl border border-slate-900/10 bg-white/90 p-5 shadow-[0_20px_45px_-36px_rgba(15,23,42,0.95)] backdrop-blur sm:p-6">
+    <div className="rounded-3xl border border-slate-900/10 bg-white/90 p-5 shadow-[0_20px_45px_-36px_rgba(15,23,42,0.95)] backdrop-blur dark:border-slate-600/35 dark:bg-slate-900/75 dark:shadow-[0_24px_50px_-36px_rgba(0,0,0,0.95)] sm:p-6">
       <div className="mb-4">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
           Expense Mix
         </p>
-        <h2 className="mt-1 text-xl font-semibold text-slate-900">Spending Breakdown</h2>
-        <p className="text-sm text-slate-600">
+        <h2 className="mt-1 text-xl font-semibold text-slate-900 dark:text-slate-100">Spending Breakdown</h2>
+        <p className="text-sm text-slate-600 dark:text-slate-300">
           Distribution of expenses across categories.
         </p>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-5">
-        <div className="h-64 rounded-2xl bg-slate-50/80 px-2 py-1 lg:col-span-3">
+        <div className="h-64 rounded-2xl bg-slate-50/80 px-2 py-1 dark:bg-slate-800/70 lg:col-span-3">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -64,9 +65,12 @@ function SpendingBreakdownChart({ data }: SpendingBreakdownChartProps) {
                 }
                 contentStyle={{
                   borderRadius: '14px',
-                  border: '1px solid #dbeafe',
-                  backgroundColor: '#f8fbff',
-                  boxShadow: '0 16px 35px -28px rgba(15, 23, 42, 0.9)',
+                  border: isDark ? '1px solid #334155' : '1px solid #dbeafe',
+                  backgroundColor: isDark ? '#0f172a' : '#f8fbff',
+                  color: isDark ? '#e2e8f0' : '#0f172a',
+                  boxShadow: isDark
+                    ? '0 18px 40px -30px rgba(0, 0, 0, 0.95)'
+                    : '0 16px 35px -28px rgba(15, 23, 42, 0.9)',
                 }}
               />
             </PieChart>
@@ -77,16 +81,16 @@ function SpendingBreakdownChart({ data }: SpendingBreakdownChartProps) {
           {data.map((entry, index) => (
             <li
               key={entry.category}
-              className="flex items-center justify-between rounded-xl border border-slate-200/80 bg-white px-3 py-2.5 shadow-[0_10px_25px_-24px_rgba(15,23,42,0.95)]"
+              className="flex items-center justify-between rounded-xl border border-slate-200/80 bg-white px-3 py-2.5 shadow-[0_10px_25px_-24px_rgba(15,23,42,0.95)] dark:border-slate-600/40 dark:bg-slate-800 dark:shadow-none"
             >
-              <span className="flex items-center gap-2 text-sm font-medium text-slate-700">
+              <span className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300">
                 <span
                   className="inline-block h-2.5 w-2.5 rounded-full ring-2 ring-white"
                   style={{ backgroundColor: PIE_COLORS[index % PIE_COLORS.length] }}
                 />
                 {entry.category}
               </span>
-              <span className="text-sm font-semibold text-slate-900">
+              <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                 {formatCurrency(entry.value)}
               </span>
             </li>

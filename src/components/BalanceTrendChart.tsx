@@ -13,9 +13,10 @@ import EmptyState from './EmptyState'
 
 interface BalanceTrendChartProps {
   data: MonthlyTrendPoint[]
+  isDark: boolean
 }
 
-function BalanceTrendChart({ data }: BalanceTrendChartProps) {
+function BalanceTrendChart({ data, isDark }: BalanceTrendChartProps) {
   if (data.length === 0) {
     return (
       <EmptyState
@@ -26,13 +27,13 @@ function BalanceTrendChart({ data }: BalanceTrendChartProps) {
   }
 
   return (
-    <div className="rounded-3xl border border-slate-900/10 bg-white/90 p-5 shadow-[0_20px_45px_-36px_rgba(15,23,42,0.95)] backdrop-blur sm:p-6">
+    <div className="rounded-3xl border border-slate-900/10 bg-white/90 p-5 shadow-[0_20px_45px_-36px_rgba(15,23,42,0.95)] backdrop-blur dark:border-slate-600/35 dark:bg-slate-900/75 dark:shadow-[0_24px_50px_-36px_rgba(0,0,0,0.95)] sm:p-6">
       <div className="mb-4">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
           Cash Flow Signal
         </p>
-        <h2 className="mt-1 text-xl font-semibold text-slate-900">Balance Trend</h2>
-        <p className="text-sm text-slate-600">
+        <h2 className="mt-1 text-xl font-semibold text-slate-900 dark:text-slate-100">Balance Trend</h2>
+        <p className="text-sm text-slate-600 dark:text-slate-300">
           Cumulative month-end balance based on recorded transactions.
         </p>
       </div>
@@ -46,12 +47,15 @@ function BalanceTrendChart({ data }: BalanceTrendChartProps) {
                 <stop offset="95%" stopColor="#22d3ee" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="4 5" stroke="#dbe3ef" />
+            <CartesianGrid
+              strokeDasharray="4 5"
+              stroke={isDark ? '#334155' : '#dbe3ef'}
+            />
             <XAxis
               dataKey="month"
               tickLine={false}
               axisLine={false}
-              tick={{ fontSize: 12, fill: '#475569' }}
+              tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#475569' }}
             />
             <YAxis
               tickFormatter={(value: number) =>
@@ -59,14 +63,17 @@ function BalanceTrendChart({ data }: BalanceTrendChartProps) {
               }
               tickLine={false}
               axisLine={false}
-              tick={{ fontSize: 12, fill: '#475569' }}
+              tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#475569' }}
             />
             <Tooltip
               contentStyle={{
                 borderRadius: '14px',
-                border: '1px solid #bae6fd',
-                backgroundColor: '#f8fcff',
-                boxShadow: '0 16px 35px -28px rgba(15, 23, 42, 0.9)',
+                border: isDark ? '1px solid #334155' : '1px solid #bae6fd',
+                backgroundColor: isDark ? '#0f172a' : '#f8fcff',
+                color: isDark ? '#e2e8f0' : '#0f172a',
+                boxShadow: isDark
+                  ? '0 18px 40px -30px rgba(0, 0, 0, 0.95)'
+                  : '0 16px 35px -28px rgba(15, 23, 42, 0.9)',
               }}
               formatter={(value) =>
                 formatCurrency(typeof value === 'number' ? value : Number(value) || 0)

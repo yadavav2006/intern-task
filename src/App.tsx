@@ -26,6 +26,9 @@ import {
 
 const ROLE_STORAGE_KEY = 'finance-dashboard-role'
 const TRANSACTION_STORAGE_KEY = 'finance-dashboard-transactions'
+const THEME_STORAGE_KEY = 'finance-dashboard-theme'
+
+type ThemeMode = 'light' | 'dark'
 
 function getInitialRole(): UserRole {
   const stored = window.localStorage.getItem(ROLE_STORAGE_KEY)
@@ -50,8 +53,21 @@ function getInitialTransactions(): Transaction[] {
   }
 }
 
+function getInitialTheme(): ThemeMode {
+  const stored = window.localStorage.getItem(THEME_STORAGE_KEY)
+
+  if (stored === 'light' || stored === 'dark') {
+    return stored
+  }
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light'
+}
+
 function App() {
   const [role, setRole] = useState<UserRole>(getInitialRole)
+  const [theme, setTheme] = useState<ThemeMode>(getInitialTheme)
   const [transactions, setTransactions] = useState<Transaction[]>(
     getInitialTransactions,
   )
@@ -81,6 +97,11 @@ function App() {
       JSON.stringify(transactions),
     )
   }, [transactions])
+
+  useEffect(() => {
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme)
+    document.documentElement.classList.toggle('dark', theme === 'dark')
+  }, [theme])
 
   const categories = useMemo(
     () => getUniqueCategories(transactions),
@@ -171,51 +192,63 @@ function App() {
     setSortOption('newest')
   }
 
+  function toggleTheme() {
+    setTheme((current) => (current === 'light' ? 'dark' : 'light'))
+  }
+
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[linear-gradient(140deg,#fff8ee_0%,#f5f8ff_45%,#eefbf4_100%)] px-4 py-6 sm:px-8 sm:py-8">
-      <div className="pointer-events-none absolute -left-24 -top-20 h-72 w-72 rounded-full bg-amber-200/45 blur-3xl" />
-      <div className="pointer-events-none absolute -right-20 top-36 h-80 w-80 rounded-full bg-sky-200/45 blur-3xl" />
-      <div className="pointer-events-none absolute bottom-12 left-1/3 h-72 w-72 rounded-full bg-emerald-200/35 blur-3xl" />
+    <div className="relative min-h-screen overflow-x-hidden bg-[linear-gradient(140deg,#fff8ee_0%,#f5f8ff_45%,#eefbf4_100%)] px-4 py-6 transition-colors dark:bg-[linear-gradient(155deg,#020617_0%,#0b1226_52%,#042f2e_100%)] sm:px-8 sm:py-8">
+      <div className="pointer-events-none absolute -left-24 -top-20 h-72 w-72 rounded-full bg-amber-200/45 blur-3xl dark:bg-amber-500/15" />
+      <div className="pointer-events-none absolute -right-20 top-36 h-80 w-80 rounded-full bg-sky-200/45 blur-3xl dark:bg-sky-500/20" />
+      <div className="pointer-events-none absolute bottom-12 left-1/3 h-72 w-72 rounded-full bg-emerald-200/35 blur-3xl dark:bg-emerald-500/15" />
 
       <div className="relative mx-auto max-w-7xl space-y-6">
-        <header className="animate-[fadeIn_500ms_ease-out] rounded-[2rem] border border-slate-900/10 bg-white/80 p-5 shadow-[0_30px_80px_-55px_rgba(15,23,42,0.85)] backdrop-blur sm:p-7">
+        <header className="animate-[fadeIn_500ms_ease-out] rounded-[2rem] border border-slate-900/10 bg-white/80 p-5 shadow-[0_30px_80px_-55px_rgba(15,23,42,0.85)] backdrop-blur dark:border-slate-600/35 dark:bg-slate-900/65 dark:shadow-[0_35px_85px_-50px_rgba(0,0,0,0.95)] sm:p-7">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="max-w-3xl">
-              <p className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-600">
+              <p className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-600 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300">
                 Personal Finance Workspace
               </p>
-              <h1 className="mt-3 text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
+              <h1 className="mt-3 text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100 sm:text-4xl">
                 MoneyMap Ledger
               </h1>
-              <p className="mt-2 text-sm text-slate-700 sm:text-base">
+              <p className="mt-2 text-sm text-slate-700 dark:text-slate-300 sm:text-base">
                 A clear, daily-friendly view of where money comes from, where it goes,
                 and how your month is trending.
               </p>
             </div>
 
-            <div className="rounded-2xl border border-slate-200 bg-white/90 p-3 shadow-sm">
+            <div className="rounded-2xl border border-slate-200 bg-white/90 p-3 shadow-sm dark:border-slate-600/45 dark:bg-slate-900/80">
               <div className="flex items-center gap-3">
-                <label className="text-sm font-semibold text-slate-700" htmlFor="role-select">
+                <label className="text-sm font-semibold text-slate-700 dark:text-slate-300" htmlFor="role-select">
                   Access
                 </label>
                 <select
                   id="role-select"
                   value={role}
                   onChange={(event) => setRole(event.target.value as UserRole)}
-                  className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-800 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                  className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-800 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:focus:ring-sky-900"
                 >
                   <option value="viewer">Viewer</option>
                   <option value="admin">Admin</option>
                 </select>
               </div>
+
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="mt-3 w-full rounded-xl border border-slate-300 bg-slate-900 px-3 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 dark:border-slate-500 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+              >
+                {theme === 'dark' ? 'Switch To Light Theme' : 'Switch To Dark Theme'}
+              </button>
             </div>
           </div>
 
           <p
             className={`mt-5 rounded-2xl border px-4 py-3 text-sm ${
               role === 'admin'
-                ? 'border-emerald-200 bg-emerald-50 text-emerald-900'
-                : 'border-amber-200 bg-amber-50 text-amber-900'
+                ? 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-600/40 dark:bg-emerald-950/45 dark:text-emerald-200'
+                : 'border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-600/40 dark:bg-amber-950/45 dark:text-amber-200'
             }`}
           >
             {role === 'admin'
@@ -227,8 +260,8 @@ function App() {
         <SummaryCards summary={summary} />
 
         <div className="grid gap-6 lg:grid-cols-2">
-          <BalanceTrendChart data={monthlyTrend} />
-          <SpendingBreakdownChart data={categoryBreakdown} />
+          <BalanceTrendChart data={monthlyTrend} isDark={theme === 'dark'} />
+          <SpendingBreakdownChart data={categoryBreakdown} isDark={theme === 'dark'} />
         </div>
 
         <InsightsPanel insights={insights} summary={summary} />
